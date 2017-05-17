@@ -168,6 +168,22 @@ public abstract class PreferenceController extends RestoreViewOnCreateController
     }
 
     /**
+     * Convenience constructor for use when no arguments are needed.
+     */
+    public PreferenceController() {
+        super(null);
+    }
+
+    /**
+     * Constructor that takes arguments that need to be retained across restarts.
+     *
+     * @param args Any arguments that need to be retained.
+     */
+    public PreferenceController(@Nullable Bundle args) {
+        super(args);
+    }
+
+    /**
      * Called to supply the preferences for this fragment.
      * Subclasses are expected to call {@link #setPreferenceScreen(PreferenceScreen)} either
      * directly or via helper methods such as {@link #addPreferencesFromResource(int)}.
