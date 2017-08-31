@@ -93,7 +93,6 @@ public class EditTextPreferenceDialogController extends PreferenceDialogControll
 
     @Override
     public void onDialogClosed(boolean positiveResult) {
-
         if (positiveResult) {
             String value = mEditText.getText().toString();
             if (getEditTextPreference().callChangeListener(value)) {

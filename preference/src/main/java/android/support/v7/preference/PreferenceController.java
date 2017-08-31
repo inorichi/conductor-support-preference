@@ -205,7 +205,7 @@ public abstract class PreferenceController extends RestoreViewOnCreateController
         final TypedValue tv = new TypedValue();
         getActivity().getTheme().resolveAttribute(R.attr.preferenceTheme, tv, true);
         final int theme = tv.resourceId;
-        if (theme <= 0) {
+        if (theme == 0) {
             throw new IllegalStateException("Must specify preferenceTheme in theme");
         }
         mStyledContext = new ContextThemeWrapper(getActivity(), theme);
@@ -227,6 +227,8 @@ public abstract class PreferenceController extends RestoreViewOnCreateController
                 R.styleable.PreferenceFragmentCompat_android_divider);
         final int dividerHeight = a.getDimensionPixelSize(
                 R.styleable.PreferenceFragmentCompat_android_dividerHeight, -1);
+        final boolean allowDividerAfterLastItem = a.getBoolean(
+                R.styleable.PreferenceFragmentCompat_allowDividerAfterLastItem, true);
 
         a.recycle();
 
@@ -256,6 +258,7 @@ public abstract class PreferenceController extends RestoreViewOnCreateController
         if (dividerHeight != -1) {
             setDividerHeight(dividerHeight);
         }
+        mDividerDecoration.setAllowDividerAfterLastItem(allowDividerAfterLastItem);
 
         listContainer.addView(mList);
         mHandler.post(mRequestFocus);
@@ -695,6 +698,7 @@ public abstract class PreferenceController extends RestoreViewOnCreateController
 
         private Drawable mDivider;
         private int mDividerHeight;
+        private boolean mAllowDividerAfterLastItem = true;
 
         @Override
         public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
@@ -706,7 +710,7 @@ public abstract class PreferenceController extends RestoreViewOnCreateController
             for (int childViewIndex = 0; childViewIndex < childCount; childViewIndex++) {
                 final View view = parent.getChildAt(childViewIndex);
                 if (shouldDrawDividerBelow(view, parent)) {
-                    int top = (int) ViewCompat.getY(view) + view.getHeight();
+                    int top = (int) view.getY() + view.getHeight();
                     mDivider.setBounds(0, top, width, top + mDividerHeight);
                     mDivider.draw(c);
                 }
@@ -728,7 +732,7 @@ public abstract class PreferenceController extends RestoreViewOnCreateController
             if (!dividerAllowedBelow) {
                 return false;
             }
-            boolean nextAllowed = true;
+            boolean nextAllowed = mAllowDividerAfterLastItem;
             int index = parent.indexOfChild(view);
             if (index < parent.getChildCount() - 1) {
                 final View nextView = parent.getChildAt(index + 1);
@@ -752,6 +756,10 @@ public abstract class PreferenceController extends RestoreViewOnCreateController
         public void setDividerHeight(int dividerHeight) {
             mDividerHeight = dividerHeight;
             mList.invalidateItemDecorations();
+        }
+
+        public void setAllowDividerAfterLastItem(boolean allowDividerAfterLastItem) {
+            mAllowDividerAfterLastItem = allowDividerAfterLastItem;
         }
     }
 }
