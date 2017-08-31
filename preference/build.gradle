@@ -16,6 +16,6 @@ android {
 }
 
 dependencies {
-    compile "com.android.support:preference-v7:26.0.2"
+    compile "com.android.support:preference-v7:26.0.1"
     provided 'com.bluelinelabs:conductor:2.1.4'
 }
