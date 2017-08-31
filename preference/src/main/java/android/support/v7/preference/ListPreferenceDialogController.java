@@ -34,12 +34,11 @@ public class ListPreferenceDialogController extends PreferenceDialogController {
     private CharSequence[] mEntries;
     private CharSequence[] mEntryValues;
 
-    public ListPreferenceDialogController(String key) {
-        super(key);
-    }
-
-    public ListPreferenceDialogController(Bundle bundle) {
-        super(bundle);
+    public static ListPreferenceDialogController newInstance(String key) {
+        ListPreferenceDialogController controller =
+                new ListPreferenceDialogController();
+        controller.getArgs().putString(ARG_KEY, key);
+        return controller;
     }
 
     @Override

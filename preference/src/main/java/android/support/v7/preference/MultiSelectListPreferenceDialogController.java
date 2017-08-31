@@ -41,12 +41,11 @@ public class MultiSelectListPreferenceDialogController extends PreferenceDialogC
     private CharSequence[] mEntries;
     private CharSequence[] mEntryValues;
 
-    public MultiSelectListPreferenceDialogController(String key) {
-        super(key);
-    }
-
-    public MultiSelectListPreferenceDialogController(Bundle bundle) {
-        super(bundle);
+    public static MultiSelectListPreferenceDialogController newInstance(String key) {
+        MultiSelectListPreferenceDialogController controller =
+                new MultiSelectListPreferenceDialogController();
+        controller.getArgs().putString(ARG_KEY, key);
+        return controller;
     }
 
     @Override

@@ -81,26 +81,6 @@ public abstract class PreferenceDialogController extends RestoreViewOnCreateCont
     private Dialog dialog;
     private boolean dismissed;
 
-    /**
-     * Convenience constructor for use when no arguments are needed.
-     */
-    protected PreferenceDialogController() {
-        super(null);
-    }
-
-    protected PreferenceDialogController(String key) {
-        super(new BundleBuilder().putString(ARG_KEY, key).build());
-    }
-
-    /**
-     * Constructor that takes arguments that need to be retained across restarts.
-     *
-     * @param args Any arguments that need to be retained.
-     */
-    protected PreferenceDialogController(@Nullable Bundle args) {
-        super(args);
-    }
-
     @NonNull
     @Override
     final protected View onCreateView(@NonNull LayoutInflater inflater,

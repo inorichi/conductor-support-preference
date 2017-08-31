@@ -6,7 +6,6 @@ android {
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 25
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -17,12 +16,6 @@ android {
 }
 
 dependencies {
-    final support_library_version = "25.3.1"
-    compile "com.android.support:support-v4:$support_library_version"
-    compile "com.android.support:appcompat-v7:$support_library_version"
-    compile "com.android.support:recyclerview-v7:$support_library_version"
-    compile "com.android.support:preference-v7:$support_library_version"
-
-    compile 'com.bluelinelabs:conductor:2.1.2'
-
+    compile "com.android.support:preference-v7:25.3.1"
+    provided 'com.bluelinelabs:conductor:2.1.4'
 }

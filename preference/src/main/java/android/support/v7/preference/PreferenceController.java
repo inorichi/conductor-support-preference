@@ -561,11 +561,11 @@ public abstract class PreferenceController extends RestoreViewOnCreateController
 
         final PreferenceDialogController f;
         if (preference instanceof EditTextPreference) {
-            f = new EditTextPreferenceDialogController(preference.getKey());
+            f = EditTextPreferenceDialogController.newInstance(preference.getKey());
         } else if (preference instanceof ListPreference) {
-            f = new ListPreferenceDialogController(preference.getKey());
+            f = ListPreferenceDialogController.newInstance(preference.getKey());
         } else if (preference instanceof AbstractMultiSelectListPreference) {
-            f = new MultiSelectListPreferenceDialogController(preference.getKey());
+            f = MultiSelectListPreferenceDialogController.newInstance(preference.getKey());
         } else {
             throw new IllegalArgumentException("Tried to display dialog for unknown " +
                     "preference type. Did you forget to override onDisplayPreferenceDialog()?");

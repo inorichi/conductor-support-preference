@@ -32,12 +32,11 @@ public class EditTextPreferenceDialogController extends PreferenceDialogControll
 
     private CharSequence mText;
 
-    public EditTextPreferenceDialogController(String key) {
-        super(key);
-    }
-
-    public EditTextPreferenceDialogController(Bundle bundle) {
-        super(bundle);
+    public static EditTextPreferenceDialogController newInstance(String key) {
+        EditTextPreferenceDialogController controller =
+                new EditTextPreferenceDialogController();
+        controller.getArgs().putString(ARG_KEY, key);
+        return controller;
     }
 
     @Override
