@@ -71,11 +71,14 @@ public abstract class PreferenceDialogController extends RestoreViewOnCreateCont
     private CharSequence mPositiveButtonText;
     private CharSequence mNegativeButtonText;
     private CharSequence mDialogMessage;
-    private @LayoutRes int mDialogLayoutRes;
+    private @LayoutRes
+    int mDialogLayoutRes;
 
     private BitmapDrawable mDialogIcon;
 
-    /** Which button was clicked. */
+    /**
+     * Which button was clicked.
+     */
     private int mWhichButtonClicked;
 
     private Dialog dialog;
@@ -92,12 +95,7 @@ public abstract class PreferenceDialogController extends RestoreViewOnCreateCont
         dialog = onCreateDialog(savedViewState);
         //noinspection ConstantConditions
         dialog.setOwnerActivity(getActivity());
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                dismissDialog();
-            }
-        });
+        dialog.setOnDismissListener(dialog -> dismissDialog());
         if (savedViewState != null) {
             Bundle dialogState = savedViewState.getBundle(SAVE_DIALOG_STATE_TAG);
             if (dialogState != null) {
@@ -228,6 +226,7 @@ public abstract class PreferenceDialogController extends RestoreViewOnCreateCont
 
     /**
      * Display the dialog, create a transaction and pushing the controller.
+     *
      * @param router The router on which the transaction will be applied
      */
     public void showDialog(@NonNull Router router) {
@@ -236,8 +235,9 @@ public abstract class PreferenceDialogController extends RestoreViewOnCreateCont
 
     /**
      * Display the dialog, create a transaction and pushing the controller.
+     *
      * @param router The router on which the transaction will be applied
-     * @param tag The tag for this controller
+     * @param tag    The tag for this controller
      */
     public void showDialog(@NonNull Router router, @Nullable String tag) {
         dismissed = false;
@@ -288,12 +288,14 @@ public abstract class PreferenceDialogController extends RestoreViewOnCreateCont
      * Do not {@link AlertDialog.Builder#create()} or
      * {@link AlertDialog.Builder#show()}.
      */
-    protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {}
+    protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
+    }
 
     /**
      * Returns whether the preference needs to display a soft input method when the dialog
      * is displayed. Default is false. Subclasses should override this method if they need
      * the soft input method brought up automatically.
+     *
      * @hide
      */
     @RestrictTo(LIBRARY_GROUP)

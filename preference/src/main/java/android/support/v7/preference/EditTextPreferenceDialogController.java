@@ -63,7 +63,7 @@ public class EditTextPreferenceDialogController extends PreferenceDialogControll
     protected void onBindDialogView(View view) {
         super.onBindDialogView(view);
 
-        mEditText = (EditText) view.findViewById(android.R.id.edit);
+        mEditText = view.findViewById(android.R.id.edit);
 
         if (mEditText == null) {
             throw new IllegalStateException("Dialog view must contain an EditText with id" +
@@ -83,7 +83,9 @@ public class EditTextPreferenceDialogController extends PreferenceDialogControll
         return (EditTextPreference) getPreference();
     }
 
-    /** @hide */
+    /**
+     * @hide
+     */
     @RestrictTo(LIBRARY_GROUP)
     @Override
     protected boolean needInputMethod() {

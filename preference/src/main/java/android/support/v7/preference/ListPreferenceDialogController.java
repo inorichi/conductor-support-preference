@@ -88,7 +88,7 @@ public class ListPreferenceDialogController extends PreferenceDialogController {
     private static CharSequence[] getCharSequenceArray(Bundle in, String key) {
         final ArrayList<String> stored = in.getStringArrayList(key);
 
-        return stored == null ? null : stored.toArray(new CharSequence[stored.size()]);
+        return stored == null ? null : stored.toArray(new CharSequence[0]);
     }
 
     private ListPreference getListPreference() {
@@ -99,21 +99,16 @@ public class ListPreferenceDialogController extends PreferenceDialogController {
     protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
         super.onPrepareDialogBuilder(builder);
 
-        builder.setSingleChoiceItems(mEntries, mClickedDialogEntryIndex,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mClickedDialogEntryIndex = which;
+        builder.setSingleChoiceItems(mEntries, mClickedDialogEntryIndex, (dialog, which) -> {
+            mClickedDialogEntryIndex = which;
 
-                        /*
-                         * Clicking on an item simulates the positive button
-                         * click, and dismisses the dialog.
-                         */
-                        ListPreferenceDialogController.this.onClick(dialog,
-                                DialogInterface.BUTTON_POSITIVE);
-                        dialog.dismiss();
-                    }
-                });
+            /*
+             * Clicking on an item simulates the positive button
+             * click, and dismisses the dialog.
+             */
+            ListPreferenceDialogController.this.onClick(dialog, DialogInterface.BUTTON_POSITIVE);
+            dialog.dismiss();
+        });
 
         /*
          * The typical interaction for list-based dialogs is to have

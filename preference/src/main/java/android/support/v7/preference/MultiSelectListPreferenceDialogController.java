@@ -16,7 +16,6 @@
 
 package android.support.v7.preference;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -101,18 +100,15 @@ public class MultiSelectListPreferenceDialogController extends PreferenceDialogC
         for (int i = 0; i < entryCount; i++) {
             checkedItems[i] = mNewValues.contains(mEntryValues[i].toString());
         }
-        builder.setMultiChoiceItems(mEntries, checkedItems,
-                new DialogInterface.OnMultiChoiceClickListener() {
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (isChecked) {
-                            mPreferenceChanged |= mNewValues.add(
-                                    mEntryValues[which].toString());
-                        } else {
-                            mPreferenceChanged |= mNewValues.remove(
-                                    mEntryValues[which].toString());
-                        }
-                    }
-                });
+        builder.setMultiChoiceItems(mEntries, checkedItems, (dialog, which, isChecked) -> {
+            if (isChecked) {
+                mPreferenceChanged |= mNewValues.add(
+                        mEntryValues[which].toString());
+            } else {
+                mPreferenceChanged |= mNewValues.remove(
+                        mEntryValues[which].toString());
+            }
+        });
     }
 
     @Override

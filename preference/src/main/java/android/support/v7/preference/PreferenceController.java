@@ -29,7 +29,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.XmlRes;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.preference.internal.AbstractMultiSelectListPreference;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -93,15 +92,15 @@ import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
  *
  * <p>The following sample code shows a simple preference fragment that is
  * populated from a resource.  The resource it loads is:</p>
- *
+ * <p>
  * {@sample frameworks/support/samples/SupportPreferenceDemos/res/xml/preferences.xml preferences}
  *
  * <p>The fragment implementation itself simply populates the preferences
  * when created.  Note that the preferences framework takes care of loading
  * the current values out of the app preferences and writing them when changed:</p>
- *
+ * <p>
  * {@sample frameworks/support/samples/SupportPreferenceDemos/src/com/example/android/supportpreference/FragmentSupportPreferencesCompat.java
- *      support_fragment_compat}
+ * support_fragment_compat}
  *
  * @see Preference
  * @see PreferenceScreen
@@ -159,9 +158,8 @@ public abstract class PreferenceController extends RestoreViewOnCreateController
     public interface OnPreferenceDisplayDialogCallback {
 
         /**
-         *
          * @param caller The fragment containing the preference requesting the dialog.
-         * @param pref The preference requesting the dialog.
+         * @param pref   The preference requesting the dialog.
          * @return true if the dialog creation has been handled.
          */
         boolean onPreferenceDisplayDialog(PreferenceController caller, Preference pref);
@@ -190,8 +188,8 @@ public abstract class PreferenceController extends RestoreViewOnCreateController
      *
      * @param savedInstanceState If the fragment is being re-created from
      *                           a previous saved state, this is the state.
-     * @param rootKey If non-null, this preference fragment should be rooted at the
-     *                {@link android.support.v7.preference.PreferenceScreen} with this key.
+     * @param rootKey            If non-null, this preference fragment should be rooted at the
+     *                           {@link android.support.v7.preference.PreferenceScreen} with this key.
      */
     public abstract void onCreatePreferences(Bundle savedInstanceState, String rootKey);
 
@@ -359,6 +357,7 @@ public abstract class PreferenceController extends RestoreViewOnCreateController
 
     /**
      * Returns the {@link PreferenceManager} used by this fragment.
+     *
      * @return The {@link PreferenceManager}.
      */
     public PreferenceManager getPreferenceManager() {
@@ -384,7 +383,7 @@ public abstract class PreferenceController extends RestoreViewOnCreateController
      * Gets the root of the preference hierarchy that this fragment is showing.
      *
      * @return The {@link PreferenceScreen} that is the root of the preference
-     *         hierarchy.
+     * hierarchy.
      */
     public PreferenceScreen getPreferenceScreen() {
         return mPreferenceManager.getPreferenceScreen();
@@ -408,9 +407,9 @@ public abstract class PreferenceController extends RestoreViewOnCreateController
      * the preference hierarchy rooted at {@code key}.
      *
      * @param preferencesResId The XML resource ID to inflate.
-     * @param key The preference key of the {@link android.support.v7.preference.PreferenceScreen}
-     *            to use as the root of the preference hierarchy, or null to use the root
-     *            {@link android.support.v7.preference.PreferenceScreen}.
+     * @param key              The preference key of the {@link android.support.v7.preference.PreferenceScreen}
+     *                         to use as the root of the preference hierarchy, or null to use the root
+     *                         {@link android.support.v7.preference.PreferenceScreen}.
      */
     public void setPreferencesFromResource(@XmlRes int preferencesResId, @Nullable String key) {
         requirePreferenceManager();
@@ -475,12 +474,16 @@ public abstract class PreferenceController extends RestoreViewOnCreateController
         onUnbindPreferences();
     }
 
-    /** @hide */
+    /**
+     * @hide
+     */
     @RestrictTo(LIBRARY_GROUP)
     protected void onBindPreferences() {
     }
 
-    /** @hide */
+    /**
+     * @hide
+     */
     @RestrictTo(LIBRARY_GROUP)
     protected void onUnbindPreferences() {
     }
@@ -493,11 +496,12 @@ public abstract class PreferenceController extends RestoreViewOnCreateController
      * Creates the {@link android.support.v7.widget.RecyclerView} used to display the preferences.
      * Subclasses may override this to return a customized
      * {@link android.support.v7.widget.RecyclerView}.
-     * @param inflater The LayoutInflater object that can be used to inflate the
-     *                 {@link android.support.v7.widget.RecyclerView}.
-     * @param parent The parent {@link android.view.View} that the RecyclerView will be attached to.
-     *               This method should not add the view itself, but this can be used to generate
-     *               the LayoutParams of the view.
+     *
+     * @param inflater           The LayoutInflater object that can be used to inflate the
+     *                           {@link android.support.v7.widget.RecyclerView}.
+     * @param parent             The parent {@link android.view.View} that the RecyclerView will be attached to.
+     *                           This method should not add the view itself, but this can be used to generate
+     *                           the LayoutParams of the view.
      * @param savedInstanceState If non-null, this view is being re-constructed from a previous
      *                           saved state as given here
      * @return A new RecyclerView object to be placed into the view hierarchy
@@ -518,6 +522,7 @@ public abstract class PreferenceController extends RestoreViewOnCreateController
      * Called from {@link #onCreateRecyclerView} to create the
      * {@link android.support.v7.widget.RecyclerView.LayoutManager} for the created
      * {@link android.support.v7.widget.RecyclerView}.
+     *
      * @return A new {@link android.support.v7.widget.RecyclerView.LayoutManager} instance.
      */
     public RecyclerView.LayoutManager onCreateLayoutManager() {
@@ -579,6 +584,7 @@ public abstract class PreferenceController extends RestoreViewOnCreateController
 
     /**
      * Basically a wrapper for getParentFragment which is v17+. Used by the leanback preference lib.
+     *
      * @return Fragment to possibly use as a callback
      * @hide
      */
@@ -596,35 +602,32 @@ public abstract class PreferenceController extends RestoreViewOnCreateController
     }
 
     private void scrollToPreferenceInternal(final Preference preference, final String key) {
-        final Runnable r = new Runnable() {
-            @Override
-            public void run() {
-                final RecyclerView.Adapter adapter = mList.getAdapter();
-                if (!(adapter instanceof
-                        PreferenceGroup.PreferencePositionCallback)) {
-                    if (adapter != null) {
-                        throw new IllegalStateException("Adapter must implement "
-                                + "PreferencePositionCallback");
-                    } else {
-                        // Adapter was set to null, so don't scroll I guess?
-                        return;
-                    }
-                }
-                final int position;
-                if (preference != null) {
-                    position = ((PreferenceGroup.PreferencePositionCallback) adapter)
-                            .getPreferenceAdapterPosition(preference);
+        final Runnable r = () -> {
+            final RecyclerView.Adapter adapter = mList.getAdapter();
+            if (!(adapter instanceof
+                    PreferenceGroup.PreferencePositionCallback)) {
+                if (adapter != null) {
+                    throw new IllegalStateException("Adapter must implement "
+                            + "PreferencePositionCallback");
                 } else {
-                    position = ((PreferenceGroup.PreferencePositionCallback) adapter)
-                            .getPreferenceAdapterPosition(key);
+                    // Adapter was set to null, so don't scroll I guess?
+                    return;
                 }
-                if (position != RecyclerView.NO_POSITION) {
-                    mList.scrollToPosition(position);
-                } else {
-                    // Item not found, wait for an update and try again
-                    adapter.registerAdapterDataObserver(
-                            new ScrollToPreferenceObserver(adapter, mList, preference, key));
-                }
+            }
+            final int position;
+            if (preference != null) {
+                position = ((PreferenceGroup.PreferencePositionCallback) adapter)
+                        .getPreferenceAdapterPosition(preference);
+            } else {
+                position = ((PreferenceGroup.PreferencePositionCallback) adapter)
+                        .getPreferenceAdapterPosition(key);
+            }
+            if (position != RecyclerView.NO_POSITION) {
+                mList.scrollToPosition(position);
+            } else {
+                // Item not found, wait for an update and try again
+                adapter.registerAdapterDataObserver(
+                        new ScrollToPreferenceObserver(adapter, mList, preference, key));
             }
         };
         if (mList == null) {

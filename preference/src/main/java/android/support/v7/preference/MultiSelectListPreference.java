@@ -94,8 +94,8 @@ public class MultiSelectListPreference extends AbstractMultiSelectListPreference
     }
 
     /**
-     * @see #setEntries(CharSequence[])
      * @param entriesResId The entries array as a resource.
+     * @see #setEntries(CharSequence[])
      */
     public void setEntries(@ArrayRes int entriesResId) {
         setEntries(getContext().getResources().getTextArray(entriesResId));
@@ -122,8 +122,8 @@ public class MultiSelectListPreference extends AbstractMultiSelectListPreference
     }
 
     /**
-     * @see #setEntryValues(CharSequence[])
      * @param entryValuesResId The entry values array as a resource.
+     * @see #setEntryValues(CharSequence[])
      */
     public void setEntryValues(@ArrayRes int entryValuesResId) {
         setEntryValues(getContext().getResources().getTextArray(entryValuesResId));
@@ -252,7 +252,7 @@ public class MultiSelectListPreference extends AbstractMultiSelectListPreference
         public void writeToParcel(@NonNull Parcel dest, int flags) {
             super.writeToParcel(dest, flags);
             dest.writeInt(values.size());
-            dest.writeStringArray(values.toArray(new String[values.size()]));
+            dest.writeStringArray(values.toArray(new String[0]));
         }
 
         public static final Creator<SavedState> CREATOR =
