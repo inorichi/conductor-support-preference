@@ -29,6 +29,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.XmlRes;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.internal.AbstractMultiSelectListPreference;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -64,8 +65,8 @@ import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
  * <p>
  * The preference hierarchy can be formed in multiple ways:
  * <li> From an XML file specifying the hierarchy
- * <li> From different {@link android.app.Activity Activities} that each specify its own
- * preferences in an XML file via {@link android.app.Activity} meta-data
+ * <li> From different {@link AppCompatActivity Activities} that each specify its own
+ * preferences in an XML file via {@link AppCompatActivity} meta-data
  * <li> From an object hierarchy rooted with {@link PreferenceScreen}
  * <p>
  * To inflate from XML, use the {@link #addPreferencesFromResource(int)}. The
