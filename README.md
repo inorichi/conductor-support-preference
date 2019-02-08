@@ -10,7 +10,7 @@ dependencies {
     implementation 'com.github.inorichi:conductor-support-preference:27.0.2'
 
     // For AndroidX (it'll be promoted to 1.0.0 once proven stable)
-    implementation 'com.github.inorichi:conductor-support-preference:faaf807'
+    implementation 'com.github.inorichi:conductor-support-preference:78e2344'
 }
 ```
 
