@@ -14,15 +14,15 @@
  * limitations under the License
  */
 
-package android.support.v7.preference;
+package androidx.preference;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.RestrictTo;
 import android.view.View;
 import android.widget.EditText;
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 public class EditTextPreferenceDialogController extends PreferenceDialogController {
 
@@ -33,8 +33,8 @@ public class EditTextPreferenceDialogController extends PreferenceDialogControll
     private CharSequence mText;
 
     public static EditTextPreferenceDialogController newInstance(String key) {
-        EditTextPreferenceDialogController controller =
-                new EditTextPreferenceDialogController();
+        EditTextPreferenceDialogController
+                controller = new EditTextPreferenceDialogController();
         controller.getArgs().putString(ARG_KEY, key);
         return controller;
     }
@@ -64,6 +64,7 @@ public class EditTextPreferenceDialogController extends PreferenceDialogControll
         super.onBindDialogView(view);
 
         mEditText = view.findViewById(android.R.id.edit);
+        mEditText.requestFocus();
 
         if (mEditText == null) {
             throw new IllegalStateException("Dialog view must contain an EditText with id" +
@@ -71,6 +72,8 @@ public class EditTextPreferenceDialogController extends PreferenceDialogControll
         }
 
         mEditText.setText(mText);
+        // Place cursor at the end
+        mEditText.setSelection(mEditText.getText().length());
     }
 
     @Override
@@ -83,9 +86,7 @@ public class EditTextPreferenceDialogController extends PreferenceDialogControll
         return (EditTextPreference) getPreference();
     }
 
-    /**
-     * @hide
-     */
+    /** @hide */
     @RestrictTo(LIBRARY_GROUP)
     @Override
     protected boolean needInputMethod() {

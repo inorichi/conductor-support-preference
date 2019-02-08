@@ -14,7 +14,7 @@
  * limitations under the License
  */
 
-package android.support.v7.preference;
+package androidx.preference;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -24,30 +24,25 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
-import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.*;
 import android.widget.TextView;
-
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.appcompat.app.AlertDialog;
 import com.bluelinelabs.conductor.Controller;
 import com.bluelinelabs.conductor.RestoreViewOnCreateController;
 import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.bluelinelabs.conductor.changehandler.SimpleSwapChangeHandler;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 /**
  * Abstract base class which presents a dialog associated with a
- * {@link android.support.v7.preference.DialogPreference}. Since the preference object may
+ * {@link androidx.preference.DialogPreference}. Since the preference object may
  * not be available during fragment re-creation, the necessary information for displaying the dialog
  * is read once during the initial call to {@link #onCreate(Bundle)} and saved/restored in the saved
  * instance state. Custom subclasses should also follow this pattern.
@@ -71,14 +66,11 @@ public abstract class PreferenceDialogController extends RestoreViewOnCreateCont
     private CharSequence mPositiveButtonText;
     private CharSequence mNegativeButtonText;
     private CharSequence mDialogMessage;
-    private @LayoutRes
-    int mDialogLayoutRes;
+    private @LayoutRes int mDialogLayoutRes;
 
     private BitmapDrawable mDialogIcon;
 
-    /**
-     * Which button was clicked.
-     */
+    /** Which button was clicked. */
     private int mWhichButtonClicked;
 
     private Dialog dialog;
@@ -95,7 +87,12 @@ public abstract class PreferenceDialogController extends RestoreViewOnCreateCont
         dialog = onCreateDialog(savedViewState);
         //noinspection ConstantConditions
         dialog.setOwnerActivity(getActivity());
-        dialog.setOnDismissListener(dialog -> dismissDialog());
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                PreferenceDialogController.this.dismissDialog();
+            }
+        });
         if (savedViewState != null) {
             Bundle dialogState = savedViewState.getBundle(SAVE_DIALOG_STATE_TAG);
             if (dialogState != null) {
@@ -108,7 +105,7 @@ public abstract class PreferenceDialogController extends RestoreViewOnCreateCont
     public void onCreate(Bundle savedInstanceState) {
         final Controller rawController = getTargetController();
         if (!(rawController instanceof DialogPreference.TargetFragment)) {
-            throw new IllegalStateException("Target fragment must implement TargetFragment" +
+            throw new IllegalStateException("Target controller must implement TargetFragment" +
                     " interface");
         }
 

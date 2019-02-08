@@ -14,16 +14,19 @@
  * limitations under the License
  */
 
-package android.support.v7.preference;
+package androidx.preference;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.preference.internal.AbstractMultiSelectListPreference;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+@SuppressWarnings("RestrictedApi")
 public class MultiSelectListPreferenceDialogController extends PreferenceDialogController {
 
     private static final String SAVE_STATE_VALUES =
@@ -35,10 +38,14 @@ public class MultiSelectListPreferenceDialogController extends PreferenceDialogC
     private static final String SAVE_STATE_ENTRY_VALUES =
             "MultiSelectListPreferenceDialogController.entryValues";
 
-    private Set<String> mNewValues = new HashSet<>();
-    private boolean mPreferenceChanged;
-    private CharSequence[] mEntries;
-    private CharSequence[] mEntryValues;
+    @SuppressWarnings("WeakerAccess") /* synthetic access */
+    Set<String> mNewValues = new HashSet<>();
+    @SuppressWarnings("WeakerAccess") /* synthetic access */
+    boolean mPreferenceChanged;
+    @SuppressWarnings("WeakerAccess") /* synthetic access */
+    CharSequence[] mEntries;
+    @SuppressWarnings("WeakerAccess") /* synthetic access */
+    CharSequence[] mEntryValues;
 
     public static MultiSelectListPreferenceDialogController newInstance(String key) {
         MultiSelectListPreferenceDialogController controller =
@@ -52,7 +59,7 @@ public class MultiSelectListPreferenceDialogController extends PreferenceDialogC
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState == null) {
-            final MultiSelectListPreference preference = getListPreference();
+            final AbstractMultiSelectListPreference preference = getListPreference();
 
             if (preference.getEntries() == null || preference.getEntryValues() == null) {
                 throw new IllegalStateException(
@@ -87,8 +94,8 @@ public class MultiSelectListPreferenceDialogController extends PreferenceDialogC
         mEntryValues = savedInstanceState.getCharSequenceArray(SAVE_STATE_ENTRY_VALUES);
     }
 
-    private MultiSelectListPreference getListPreference() {
-        return (MultiSelectListPreference) getPreference();
+    private AbstractMultiSelectListPreference getListPreference() {
+        return (AbstractMultiSelectListPreference) getPreference();
     }
 
     @Override
@@ -100,20 +107,24 @@ public class MultiSelectListPreferenceDialogController extends PreferenceDialogC
         for (int i = 0; i < entryCount; i++) {
             checkedItems[i] = mNewValues.contains(mEntryValues[i].toString());
         }
-        builder.setMultiChoiceItems(mEntries, checkedItems, (dialog, which, isChecked) -> {
-            if (isChecked) {
-                mPreferenceChanged |= mNewValues.add(
-                        mEntryValues[which].toString());
-            } else {
-                mPreferenceChanged |= mNewValues.remove(
-                        mEntryValues[which].toString());
-            }
-        });
+        builder.setMultiChoiceItems(mEntries, checkedItems,
+                new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        if (isChecked) {
+                            mPreferenceChanged |= mNewValues.add(
+                                    mEntryValues[which].toString());
+                        } else {
+                            mPreferenceChanged |= mNewValues.remove(
+                                    mEntryValues[which].toString());
+                        }
+                    }
+                });
     }
 
     @Override
     public void onDialogClosed(boolean positiveResult) {
-        final MultiSelectListPreference preference = getListPreference();
+        final AbstractMultiSelectListPreference preference = getListPreference();
         if (positiveResult && mPreferenceChanged) {
             final Set<String> values = mNewValues;
             if (preference.callChangeListener(values)) {

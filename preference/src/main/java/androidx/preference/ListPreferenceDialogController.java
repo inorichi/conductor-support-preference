@@ -14,14 +14,12 @@
  * limitations under the License
  */
 
-package android.support.v7.preference;
+package androidx.preference;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
-
-import java.util.ArrayList;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 
 public class ListPreferenceDialogController extends PreferenceDialogController {
 
@@ -30,6 +28,7 @@ public class ListPreferenceDialogController extends PreferenceDialogController {
     private static final String SAVE_STATE_ENTRY_VALUES =
             "ListPreferenceDialogController.entryValues";
 
+    @SuppressWarnings("WeakerAccess") /* synthetic access */
     private int mClickedDialogEntryIndex;
     private CharSequence[] mEntries;
     private CharSequence[] mEntryValues;
@@ -62,8 +61,8 @@ public class ListPreferenceDialogController extends PreferenceDialogController {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(SAVE_STATE_INDEX, mClickedDialogEntryIndex);
-        putCharSequenceArray(outState, SAVE_STATE_ENTRIES, mEntries);
-        putCharSequenceArray(outState, SAVE_STATE_ENTRY_VALUES, mEntryValues);
+        outState.putCharSequenceArray(SAVE_STATE_ENTRIES, mEntries);
+        outState.putCharSequenceArray(SAVE_STATE_ENTRY_VALUES, mEntryValues);
     }
 
     @Override
@@ -71,24 +70,8 @@ public class ListPreferenceDialogController extends PreferenceDialogController {
         super.onRestoreInstanceState(savedInstanceState);
 
         mClickedDialogEntryIndex = savedInstanceState.getInt(SAVE_STATE_INDEX, 0);
-        mEntries = getCharSequenceArray(savedInstanceState, SAVE_STATE_ENTRIES);
-        mEntryValues = getCharSequenceArray(savedInstanceState, SAVE_STATE_ENTRY_VALUES);
-    }
-
-    private static void putCharSequenceArray(Bundle out, String key, CharSequence[] entries) {
-        final ArrayList<String> stored = new ArrayList<>(entries.length);
-
-        for (final CharSequence cs : entries) {
-            stored.add(cs.toString());
-        }
-
-        out.putStringArrayList(key, stored);
-    }
-
-    private static CharSequence[] getCharSequenceArray(Bundle in, String key) {
-        final ArrayList<String> stored = in.getStringArrayList(key);
-
-        return stored == null ? null : stored.toArray(new CharSequence[0]);
+        mEntries = savedInstanceState.getCharSequenceArray(SAVE_STATE_ENTRIES);
+        mEntryValues = savedInstanceState.getCharSequenceArray(SAVE_STATE_ENTRY_VALUES);
     }
 
     private ListPreference getListPreference() {
@@ -99,16 +82,21 @@ public class ListPreferenceDialogController extends PreferenceDialogController {
     protected void onPrepareDialogBuilder(AlertDialog.Builder builder) {
         super.onPrepareDialogBuilder(builder);
 
-        builder.setSingleChoiceItems(mEntries, mClickedDialogEntryIndex, (dialog, which) -> {
-            mClickedDialogEntryIndex = which;
+        builder.setSingleChoiceItems(mEntries, mClickedDialogEntryIndex,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mClickedDialogEntryIndex = which;
 
-            /*
-             * Clicking on an item simulates the positive button
-             * click, and dismisses the dialog.
-             */
-            ListPreferenceDialogController.this.onClick(dialog, DialogInterface.BUTTON_POSITIVE);
-            dialog.dismiss();
-        });
+                        /*
+                         * Clicking on an item simulates the positive button
+                         * click, and dismisses the dialog.
+                         */
+                        ListPreferenceDialogController.this.onClick(dialog,
+                                DialogInterface.BUTTON_POSITIVE);
+                        dialog.dismiss();
+                    }
+                });
 
         /*
          * The typical interaction for list-based dialogs is to have
