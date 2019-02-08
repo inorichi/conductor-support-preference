@@ -131,7 +131,7 @@ public abstract class PreferenceController extends RestoreViewOnCreateController
 
     private int mLayoutResId = R.layout.preference_list_fragment;
 
-    private DividerDecoration mDividerDecoration = new DividerDecoration();
+    private DividerDecoration mDividerDecoration = null;
 
     private static final int MSG_BIND_PREFERENCES = 1;
     private Handler mHandler = new Handler() {
@@ -313,7 +313,9 @@ public abstract class PreferenceController extends RestoreViewOnCreateController
      * @attr ref R.styleable#PreferenceFragmentCompat_android_divider
      */
     public void setDivider(Drawable divider) {
-        mDividerDecoration.setDivider(divider);
+        if (mDividerDecoration != null) {
+            mDividerDecoration.setDivider(divider);
+        }
     }
 
     /**
@@ -324,7 +326,9 @@ public abstract class PreferenceController extends RestoreViewOnCreateController
      * @attr ref R.styleable#PreferenceFragmentCompat_android_dividerHeight
      */
     public void setDividerHeight(int height) {
-        mDividerDecoration.setDividerHeight(height);
+        if (mDividerDecoration != null) {
+            mDividerDecoration.setDividerHeight(height);
+        }
     }
 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
