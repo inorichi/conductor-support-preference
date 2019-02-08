@@ -255,6 +255,7 @@ public abstract class PreferenceController extends RestoreViewOnCreateController
         mLayoutResId = a.getResourceId(R.styleable.PreferenceFragmentCompat_android_layout,
                 mLayoutResId);
 
+        mDividerDecoration = new DividerDecoration();
         final Drawable divider = a.getDrawable(
                 R.styleable.PreferenceFragmentCompat_android_divider);
         final int dividerHeight = a.getDimensionPixelSize(
