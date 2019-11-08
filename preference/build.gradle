@@ -24,6 +24,6 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.preference:preference:1.0.0'
+    implementation 'androidx.preference:preference:1.1.0'
     compileOnly 'com.bluelinelabs:conductor:2.1.5'
 }

@@ -35,7 +35,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.XmlRes;
 import androidx.fragment.app.Fragment;
-import androidx.preference.internal.AbstractMultiSelectListPreference;
+import androidx.preference.MultiSelectListPreference;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bluelinelabs.conductor.RestoreViewOnCreateController;
@@ -612,7 +612,7 @@ public abstract class PreferenceController extends RestoreViewOnCreateController
             f = EditTextPreferenceDialogController.newInstance(preference.getKey());
         } else if (preference instanceof ListPreference) {
             f = ListPreferenceDialogController.newInstance(preference.getKey());
-        } else if (preference instanceof AbstractMultiSelectListPreference) {
+        } else if (preference instanceof MultiSelectListPreference) {
             f = MultiSelectListPreferenceDialogController.newInstance(preference.getKey());
         } else {
             throw new IllegalArgumentException("Tried to display dialog for unknown " +
